@@ -11,6 +11,7 @@ import android.view.SurfaceView;
 
 import com.example.zfc.dropball.Point;
 import com.example.zfc.dropball.config.Constant;
+import com.example.zfc.dropball.draw.DrawManager;
 
 /**
  * Created by zfc on 2018/5/4.
@@ -26,6 +27,7 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
 
     private DrawHandler drawHandler;
     private Paint paint;
+    private DrawManager drawProcesser; //用来绘制
 
 
     public SurfaceViewController(SurfaceView subRootView,Point startPoint) {
@@ -33,14 +35,14 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
         this.startPoint = startPoint;
         initSurfaceView();
         initDrawThead();
-        initPaint();
+        initDrawProcesser();
     }
 
-    private void initPaint() {
-        paint = new Paint();
-        paint.setColor(Color.YELLOW);
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+    private void initDrawProcesser() {
+        drawProcesser = new DrawManager(startPoint);
     }
+
+
 
 
     private void initSurfaceView() {
@@ -107,10 +109,11 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
                     c = surfaceHolder.lockCanvas(null);
                     switch (msg.what) {
                         case DRAW_DIRECTION_LINE:
-                            doDrawLine(c, (Point) msg.obj);
+                            drawProcesser.doDraw(c, (Point) msg.obj, DrawManager.LINE);
                             break;
                         default:
                             doDrawDrop(c, (Point) msg.obj);
+                            drawProcesser.doDraw(c, (Point) msg.obj, DrawManager.DROP);
                             break;
                     }
                 }
@@ -132,6 +135,8 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
      * @param endPoint
      */
     private void doDrawLine(Canvas c, Point endPoint) {
+
+
         c.drawColor(Color.BLACK);
         float dx = endPoint.x - startPoint.x;
         float dy = endPoint.y - startPoint.y;
@@ -150,13 +155,7 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
     }
 
     private void doDrawDrop(Canvas c, Point p) {
-        //这个很重要，清屏操作，清楚掉上次绘制的残留图像
-        c.drawColor(Color.BLACK);
-//        c.translate(200, 200);
-        c.drawCircle(p.x,p.y, 30, paint);
-//        if(radius > 100){
-//            radius = 10f;
-//        }
+
     }
 
 
