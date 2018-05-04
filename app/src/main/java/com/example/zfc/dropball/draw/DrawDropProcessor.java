@@ -2,30 +2,24 @@ package com.example.zfc.dropball.draw;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-
+import android.os.Handler;
+import android.os.Looper;
 import com.example.zfc.dropball.Point;
 
 /**
  * Created by zfc on 2018/5/5.
  */
 
-public class DrawDropProcessor implements IDrawable{
-
-    private final Point startPoint;
-    private Paint paint;
+public class DrawDropProcessor extends BaseDrawProcessor{
+    private Handler drawHandler;
 
     public DrawDropProcessor(Point startPoint) {
-        this.startPoint = startPoint;
-        initPaint();
+        super(startPoint);
+        //计算动画
+        initDrawThread();
     }
 
 
-    private void initPaint() {
-        paint = new Paint();
-        paint.setColor(Color.YELLOW);
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
-    }
 
     @Override
     public void doDraw(Canvas c, Point endPoint) {
@@ -37,6 +31,29 @@ public class DrawDropProcessor implements IDrawable{
 //            radius = 10f;
 //        }
 
-        //计算动画
+
+    }
+
+    /**
+     * 创建一个子线程用来渲染滚动中的小球
+     */
+    private void initDrawThread() {
+        new Thread(){
+            @Override
+            public void run() {
+                Looper.prepare();
+                drawHandler = new Handler(Looper.myLooper());
+                Looper.loop();
+            }
+        }.start();
+    }
+
+    @Override
+    public void release() {
+        super.release();
+        if (drawHandler != null) {
+            drawHandler.removeCallbacksAndMessages(null);
+            drawHandler = null;
+        }
     }
 }

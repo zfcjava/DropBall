@@ -2,8 +2,6 @@ package com.example.zfc.dropball.draw;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-
 import com.example.zfc.dropball.Point;
 import com.example.zfc.dropball.config.Constant;
 
@@ -11,22 +9,13 @@ import com.example.zfc.dropball.config.Constant;
  * Created by zfc on 2018/5/5.
  */
 
-public class DrawLineProcessor implements IDrawable {
+public class DrawLineProcessor extends BaseDrawProcessor {
 
-    private final Point startPoint;
-    private Paint paint;
 
     public DrawLineProcessor(Point startPoint) {
-        this.startPoint = startPoint;
-        initPaint();
+        super(startPoint);
     }
 
-
-    private void initPaint() {
-        paint = new Paint();
-        paint.setColor(Color.YELLOW);
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
-    }
 
     @Override
     public void doDraw(Canvas c, Point endPoint) {

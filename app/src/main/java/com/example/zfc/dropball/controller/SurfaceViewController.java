@@ -27,7 +27,7 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
 
     private DrawHandler drawHandler;
     private Paint paint;
-    private DrawManager drawProcesser; //用来绘制
+    private DrawManager drawManager; //用来绘制
 
 
     public SurfaceViewController(SurfaceView subRootView,Point startPoint) {
@@ -39,7 +39,7 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
     }
 
     private void initDrawProcesser() {
-        drawProcesser = new DrawManager(startPoint);
+        drawManager = new DrawManager(startPoint);
     }
 
 
@@ -109,11 +109,11 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
                     c = surfaceHolder.lockCanvas(null);
                     switch (msg.what) {
                         case DRAW_DIRECTION_LINE:
-                            drawProcesser.doDraw(c, (Point) msg.obj, DrawManager.LINE);
+                            drawManager.doDraw(c, (Point) msg.obj, DrawManager.LINE);
                             break;
                         default:
                             doDrawDrop(c, (Point) msg.obj);
-                            drawProcesser.doDraw(c, (Point) msg.obj, DrawManager.DROP);
+                            drawManager.doDraw(c, (Point) msg.obj, DrawManager.DROP);
                             break;
                     }
                 }
@@ -165,6 +165,11 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
         if (drawHandler != null) {
             drawHandler.removeCallbacksAndMessages(null);
             drawHandler = null;
+        }
+
+        if (drawManager != null) {
+            drawManager.release();
+            drawManager = null;
         }
     }
 }
