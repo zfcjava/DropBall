@@ -5,6 +5,7 @@ package com.example.zfc.dropball.config;
  */
 
 public class Constant {
-    public static final float DIRECTION_BALL_RADIUS = 30f;
-    public static final float DIRECTION_BALL_SPACE = 10f;
+    public static final float DIRECTION_BALL_RADIUS = 10f;
+    public static final float DIRECTION_BALL_SPACE = 50f;
+    public static final int DIRECTION_BALL_NUM = 10;
 }

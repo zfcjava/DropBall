@@ -139,10 +139,10 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
             return; //不考虑
         }
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
-        int circleNum = (int) (distance / (2 * Constant.DIRECTION_BALL_RADIUS));
-        for (int i=1;i<circleNum;i++) {
-            float newX = startPoint.x + i * (2 * Constant.DIRECTION_BALL_RADIUS) / distance * dx;
-            float newy = startPoint.y + i * (2 * Constant.DIRECTION_BALL_RADIUS) / distance * dy;
+
+        for (int i = 1; i <= Constant.DIRECTION_BALL_NUM; i++) {
+            float newX = startPoint.x + i * (2 * Constant.DIRECTION_BALL_RADIUS + Constant.DIRECTION_BALL_SPACE) / distance * dx;
+            float newy = startPoint.y + i * (2 * Constant.DIRECTION_BALL_RADIUS + Constant.DIRECTION_BALL_SPACE) / distance * dy;
             c.drawCircle(newX, newy, Constant.DIRECTION_BALL_RADIUS, paint);
         }
 //        c.translate(200, 200);
