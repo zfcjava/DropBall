@@ -49,13 +49,13 @@ public class MainActivity extends AppCompatActivity implements ITager{
     }
 
     private void initController() {
-        surfaceViewController = new SurfaceViewController(surfaceView);
+        surfaceViewController = new SurfaceViewController(surfaceView, startPoint);
         touchProcessController = new TouchProcessController(rl_content, new TouchProcessController.TouchListener() {
             @Override
             public void onTouchPositionChanged(Point endPoint) {
                 updatePoint(endPoint);
                 if (surfaceViewController != null) {
-                    surfaceViewController.doDraw(endPoint);
+                    surfaceViewController.doDrawLine(endPoint);
                 }
             }
 
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements ITager{
             public void onTouchEnd(Point endPoint) {
                 updatePoint(endPoint);
                 if (surfaceViewController != null) {
-                    surfaceViewController.doDraw(endPoint);
+                    surfaceViewController.doDrawDrop(endPoint);
                 }
             }
         });

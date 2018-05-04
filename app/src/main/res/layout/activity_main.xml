@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:id="@+id/header"
-        android:background="#0f00fa">
+        >
         <com.example.zfc.dropball.comp.CircleImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
