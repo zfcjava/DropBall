@@ -74,7 +74,7 @@ public class DrawDropProcessor extends BaseDrawProcessor{
                 }
                surfaceViewController.refreshFrame4Drop();
             }
-        }, 200);
+        }, 10);
 
     }
 

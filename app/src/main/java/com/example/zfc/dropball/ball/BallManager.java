@@ -49,7 +49,7 @@ public class BallManager {
                     dropingBalls.add(dropBalls.get(i));
                     LogUtil.e("dropingBalls", "size = " + dropingBalls.size());
                     try {
-                        sleep(1000);
+                        sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
