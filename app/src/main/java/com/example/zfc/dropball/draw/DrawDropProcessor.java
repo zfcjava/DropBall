@@ -8,6 +8,7 @@ import android.os.Looper;
 import com.example.zfc.dropball.Gradient;
 import com.example.zfc.dropball.Point;
 import com.example.zfc.dropball.ball.Ball;
+import com.example.zfc.dropball.ball.BallManager;
 import com.example.zfc.dropball.controller.SurfaceViewController;
 import com.example.zfc.dropball.utils.LogUtil;
 
@@ -19,12 +20,13 @@ public class DrawDropProcessor extends BaseDrawProcessor{
 
     private SurfaceViewController surfaceViewController;
     private Handler drawHandler;
-    private Ball ball;
 
 
     public DrawDropProcessor(Point startPoint, SurfaceViewController surfaceViewController) {
         super(startPoint);
-        ball = new Ball(startPoint.x, startPoint.y);
+        BallManager.getInstance().addBall(new Ball(startPoint.x, startPoint.y)); //TODO 暂时放入3个小球
+        BallManager.getInstance().addBall(new Ball(startPoint.x, startPoint.y));
+        BallManager.getInstance().addBall(new Ball(startPoint.x, startPoint.y));
         this.surfaceViewController = surfaceViewController;
         //计算动画
         initDrawThread();
@@ -51,15 +53,15 @@ public class DrawDropProcessor extends BaseDrawProcessor{
                 return; //不考虑
             }
             float distance = (float) Math.sqrt(dx * dx + dy * dy);
-            ball.setGradient(new Gradient(dx, dy, distance));
+            BallManager.getInstance().setGradient(new Gradient(dx, dy, distance));
         }
 
         c.drawColor(Color.BLACK);
-        ball.drawOn(c, paint);
+        BallManager.getInstance().drawOn(c, paint);
 
 
-        if (ball.isBottom()) {
-            ball.reset();
+        if (BallManager.getInstance().isDropFinshed()) {
+            BallManager.getInstance().resetAllBalles();
             drawHandler.removeCallbacksAndMessages(null);
             return;
         }
@@ -67,7 +69,6 @@ public class DrawDropProcessor extends BaseDrawProcessor{
         drawHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                LogUtil.e("ball", ball.y + "------");
                 if (drawHandler == null) {
                     return;
                 }
@@ -79,8 +80,7 @@ public class DrawDropProcessor extends BaseDrawProcessor{
 
     @Override
     public boolean isDrawingDrop() {
-        return !(ball.x == startPoint.x &&
-                ball.y == startPoint.y);
+        return !(BallManager.getInstance().isDropFinshed());
     }
 
     /**

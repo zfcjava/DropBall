@@ -15,4 +15,18 @@ public class Gradient {
         this.dy = dy;
         this.ds = distance;
     }
+
+    public Gradient(Gradient gradient) {
+        this.dx = gradient.dx;
+        this.dy = gradient.dy;
+        this.ds = gradient.ds;
+    }
+
+    /**
+     * 深度拷贝自己
+     * @return
+     */
+    public Gradient copySelf() {
+        return new Gradient(this);
+    }
 }
