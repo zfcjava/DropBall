@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity implements ITager{
 
     private RelativeLayout header;
     private Point startPoint;
-    private Point endPoint;
     private RelativeLayout rl_content;
     private SurfaceView surfaceView;
     private SurfaceViewController surfaceViewController;
@@ -53,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements ITager{
         touchProcessController = new TouchProcessController(rl_content, new TouchProcessController.TouchListener() {
             @Override
             public void onTouchPositionChanged(Point endPoint) {
+                if (surfaceViewController.isDrawingDrop()) {
+                    return;
+                }
                 updatePoint(endPoint);
                 if (surfaceViewController != null) {
                     surfaceViewController.doDrawLine(endPoint);
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements ITager{
 
             @Override
             public void onTouchEnd(Point endPoint) {
+                if (surfaceViewController.isDrawingDrop()) {
+                    return;
+                }
                 updatePoint(endPoint);
                 if (surfaceViewController != null) {
                     surfaceViewController.doDrawDrop(endPoint);

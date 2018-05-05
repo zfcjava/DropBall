@@ -10,7 +10,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.zfc.dropball.Point;
-import com.example.zfc.dropball.config.Constant;
 import com.example.zfc.dropball.draw.DrawManager;
 
 /**
@@ -20,6 +19,7 @@ import com.example.zfc.dropball.draw.DrawManager;
 public class SurfaceViewController extends BaseController<SurfaceView> implements SurfaceHolder.Callback {
 
     public final int DRAW_DIRECTION_LINE = 2018;
+    public final int DRAW_DROP = 2019;
     private final Point startPoint;
 
     boolean isCanUseSurfaceView = false; //判断当前的surfaceView是否可用
@@ -39,7 +39,7 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
     }
 
     private void initDrawProcesser() {
-        drawManager = new DrawManager(startPoint);
+        drawManager = new DrawManager(startPoint, this);
     }
 
 
@@ -85,11 +85,15 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
             throw new RuntimeException("drawHanlder is null");
         }
 
-        drawHandler.sendMessage(drawHandler.obtainMessage(1, endPoint));
+        drawHandler.sendMessage(drawHandler.obtainMessage(DRAW_DROP, endPoint));
     }
 
     public void doDrawLine(Point endPoint) {
         drawHandler.sendMessage(drawHandler.obtainMessage(DRAW_DIRECTION_LINE, endPoint));
+    }
+
+    public void refreshFrame4Drop(){
+        drawHandler.sendMessage(drawHandler.obtainMessage(DRAW_DROP, new Point(-2018, -2018)));
     }
 
     public class DrawHandler extends Handler{
@@ -111,8 +115,10 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
                         case DRAW_DIRECTION_LINE:
                             drawManager.doDraw(c, (Point) msg.obj, DrawManager.LINE);
                             break;
+                        case DRAW_DROP:
+                            drawManager.doDraw(c, (Point) msg.obj, DrawManager.DROP);
+                            break;
                         default:
-                            doDrawDrop(c, (Point) msg.obj);
                             drawManager.doDraw(c, (Point) msg.obj, DrawManager.DROP);
                             break;
                     }
@@ -129,35 +135,12 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
 
     }
 
-    /**
-     * 画描述方向的线
-     * @param c
-     * @param endPoint
-     */
-    private void doDrawLine(Canvas c, Point endPoint) {
-
-
-        c.drawColor(Color.BLACK);
-        float dx = endPoint.x - startPoint.x;
-        float dy = endPoint.y - startPoint.y;
-        if (dy <= 0) {
-            return; //不考虑
+    public boolean isDrawingDrop(){
+        if (drawManager == null) {
+            return false;
         }
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
-
-        for (int i = 1; i <= Constant.DIRECTION_BALL_NUM; i++) {
-            float newX = startPoint.x + i * (2 * Constant.DIRECTION_BALL_RADIUS + Constant.DIRECTION_BALL_SPACE) / distance * dx;
-            float newy = startPoint.y + i * (2 * Constant.DIRECTION_BALL_RADIUS + Constant.DIRECTION_BALL_SPACE) / distance * dy;
-            c.drawCircle(newX, newy, Constant.DIRECTION_BALL_RADIUS, paint);
-        }
-//        c.translate(200, 200);
-
+        return drawManager.isDrawingDrop();
     }
-
-    private void doDrawDrop(Canvas c, Point p) {
-
-    }
-
 
     @Override
     public void release() {

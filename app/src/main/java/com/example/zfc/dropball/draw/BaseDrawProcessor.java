@@ -37,4 +37,8 @@ public class BaseDrawProcessor implements IDrawable,IReleaseable {
     public void doDraw(Canvas c, Point endPoint) {
 
     }
+
+    public boolean isDrawingDrop() {
+        return false;
+    }
 }
