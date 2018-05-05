@@ -4,12 +4,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+
+import com.example.zfc.dropball.Gradient;
 import com.example.zfc.dropball.Point;
 import com.example.zfc.dropball.ball.Ball;
 import com.example.zfc.dropball.controller.SurfaceViewController;
 import com.example.zfc.dropball.utils.LogUtil;
-
-import java.lang.ref.PhantomReference;
 
 /**
  * Created by zfc on 2018/5/5.
@@ -44,16 +44,22 @@ public class DrawDropProcessor extends BaseDrawProcessor{
 
         if (endPoint.x != -2018 || endPoint.y != -2018) { //这是在做帧刷新
 //            ball = new Ball(endPoint.x, endPoint.y);
+            //求一下斜率
+            float dx = endPoint.x - startPoint.x;
+            float dy = endPoint.y - startPoint.y;
+            if (dy <= 0) {
+                return; //不考虑
+            }
+            float distance = (float) Math.sqrt(dx * dx + dy * dy);
+            ball.setGradient(new Gradient(dx, dy, distance));
         }
 
-
         c.drawColor(Color.BLACK);
-        c.drawCircle(ball.x, ball.y += 30, 30, paint);
+        ball.drawOn(c, paint);
 
 
         if (ball.isBottom()) {
-            ball.x = startPoint.x;
-            ball.y = startPoint.y;
+            ball.reset();
             drawHandler.removeCallbacksAndMessages(null);
             return;
         }
@@ -67,7 +73,7 @@ public class DrawDropProcessor extends BaseDrawProcessor{
                 }
                surfaceViewController.refreshFrame4Drop();
             }
-        }, 300);
+        }, 200);
 
     }
 
