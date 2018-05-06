@@ -17,12 +17,14 @@ public class DrawManager implements IReleaseable{
 
     private  BaseDrawProcessor drawDropProcessor;
     private BaseDrawProcessor drawLineProcessor;
+    private BaseDrawProcessor drawStoneProcessor;
 
 
 
     public DrawManager(Point startPoint, SurfaceViewController surfaceViewController) {
         this.drawLineProcessor = new DrawLineProcessor(startPoint);
         this.drawDropProcessor = new DrawDropProcessor(startPoint, surfaceViewController);
+        this.drawStoneProcessor = new DrawStoneProcessor(startPoint);
     }
 
     public void doDraw(Canvas c, Point endPoint, int strategy) {
@@ -34,6 +36,7 @@ public class DrawManager implements IReleaseable{
                 drawDropProcessor.doDraw(c, endPoint);
                 break;
         }
+        drawStoneProcessor.doDraw(c, endPoint);
     }
 
 
