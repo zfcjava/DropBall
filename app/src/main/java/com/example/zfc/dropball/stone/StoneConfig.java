@@ -14,7 +14,11 @@ public class StoneConfig {
         bottomY = UIAdapterUtil.getWindowHeight(BallApplication.getINSTANCE().getApplicationContext()) - SPACE_ROWS;
     }
 
-    public static final float SPACE_ROWS = 80f;
+    public static float topY = 20f;
+
+    public static final float SPACE_ROWS = 120f;
+
+    public static final float SPACE_LINE = 80f;
 
     public static final float STONE_CIRCLE_RADIUS = 30f;
 

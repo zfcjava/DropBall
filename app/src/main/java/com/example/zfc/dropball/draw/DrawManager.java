@@ -1,6 +1,7 @@
 package com.example.zfc.dropball.draw;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 
 import com.example.zfc.dropball.Point;
 import com.example.zfc.dropball.controller.SurfaceViewController;
@@ -14,6 +15,7 @@ public class DrawManager implements IReleaseable{
 
     public static final int LINE = 1;
     public static final int DROP = 2;
+    public static final int STONE = 3;
 
     private  BaseDrawProcessor drawDropProcessor;
     private BaseDrawProcessor drawLineProcessor;
@@ -31,12 +33,19 @@ public class DrawManager implements IReleaseable{
         switch (strategy) {
             case LINE:
                 drawLineProcessor.doDraw(c, endPoint);
+                drawStoneProcessor.doDraw(c, endPoint);
                 break;
             case DROP:
                 drawDropProcessor.doDraw(c, endPoint);
+                drawStoneProcessor.doDraw(c, endPoint);
                 break;
+            case STONE:
+                c.drawColor(Color.BLACK);
+                drawStoneProcessor.doDraw(c, endPoint);
+                 break;
+
         }
-        drawStoneProcessor.doDraw(c, endPoint);
+
     }
 
 

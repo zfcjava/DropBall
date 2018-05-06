@@ -43,4 +43,26 @@ public abstract class Stone {
 //        c.drawText(attackNums + "", center.x, center.y, paint);
     }
 
+    /**
+     * 是否可以上移动一排
+     * @return
+     */
+    public boolean doGoUpARow() {
+
+        center.y -= StoneConfig.SPACE_ROWS;
+        if (center.y <= StoneConfig.topY) {
+            return false;
+        }
+        return true;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Stone{" +
+                "attackNums=" + attackNums +
+                ", paint=" + paint +
+                ", center=" + center +
+                '}';
+    }
 }

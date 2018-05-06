@@ -2,7 +2,7 @@ package com.example.zfc.dropball.stone;
 
 import android.graphics.Canvas;
 
-import com.example.zfc.dropball.Point;
+import com.example.zfc.dropball.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ public class StoneManager {
 
     private static StoneManager instance;
     List<Stone> stones = new ArrayList<>(); //用于存储现有的石头
+    StoneGenerator stoneGenerator;
 
     public static StoneManager getInstance() {
         if (instance == null) {
@@ -29,12 +30,32 @@ public class StoneManager {
 
 
     public StoneManager() {
-        Stone tmp = new CircleStone(new Point(100, 100));
-        stones.add(tmp);
-        tmp = new SquareStone(new Point(100, 200));
-        stones.add(tmp);
-        tmp = new TriangleStone(new Point(100, 300));
-        stones.add(tmp);
+        stoneGenerator = new StoneGenerator();
+        getRowStone();
+    }
+
+
+    public void getRowStone(){
+        //之前的石头上升一排
+        LogUtil.e("GAME", "PRE --" + stones.toString());
+        goUpARow(stones);
+        LogUtil.e("GAME", "UPLOAD ---");
+        List<Stone> newStones = stoneGenerator.generateStone();
+        LogUtil.e("GAME", "NEW --" + newStones.toString());
+        stones.addAll(newStones);
+        LogUtil.e("GAME", "POST --" + stones.toString());
+    }
+
+    private void goUpARow(List<Stone> stones) {
+        if (stones.size() == 0) {
+            return;
+        }
+        for (Stone stone : stones) {
+            if(!stone.doGoUpARow()){
+                LogUtil.e("GAME", "GAME OVER");
+                return;
+            }
+        }
     }
 
     public void doDraw(Canvas c) {
@@ -42,4 +63,6 @@ public class StoneManager {
             stones.get(i).doDraw(c);
         }
     }
+
+
 }

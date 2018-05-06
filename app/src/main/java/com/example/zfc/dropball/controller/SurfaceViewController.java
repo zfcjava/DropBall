@@ -20,6 +20,7 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
 
     public final int DRAW_DIRECTION_LINE = 2018;
     public final int DRAW_DROP = 2019;
+    public final int DRAW_STONE = 2020;
     private final Point startPoint;
 
     boolean isCanUseSurfaceView = false; //判断当前的surfaceView是否可用
@@ -96,6 +97,10 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
         drawHandler.sendMessage(drawHandler.obtainMessage(DRAW_DROP, new Point(-2018, -2018)));
     }
 
+    public void doDrawStone() {
+        drawHandler.sendMessage(drawHandler.obtainMessage(DRAW_STONE));
+    }
+
     public class DrawHandler extends Handler{
 
         public DrawHandler(Looper looper) {
@@ -117,6 +122,9 @@ public class SurfaceViewController extends BaseController<SurfaceView> implement
                             break;
                         case DRAW_DROP:
                             drawManager.doDraw(c, (Point) msg.obj, DrawManager.DROP);
+                            break;
+                        case DRAW_STONE:
+                            drawManager.doDraw(c, (Point) msg.obj, DrawManager.STONE);
                             break;
                         default:
                             drawManager.doDraw(c, (Point) msg.obj, DrawManager.DROP);

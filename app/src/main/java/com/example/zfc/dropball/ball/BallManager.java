@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.example.zfc.dropball.Gradient;
+import com.example.zfc.dropball.stone.StoneManager;
 import com.example.zfc.dropball.utils.LogUtil;
 
 import java.util.ArrayList;

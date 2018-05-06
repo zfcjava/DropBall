@@ -10,6 +10,7 @@ import com.example.zfc.dropball.Point;
 import com.example.zfc.dropball.ball.Ball;
 import com.example.zfc.dropball.ball.BallManager;
 import com.example.zfc.dropball.controller.SurfaceViewController;
+import com.example.zfc.dropball.stone.StoneManager;
 import com.example.zfc.dropball.utils.LogUtil;
 
 /**
@@ -63,6 +64,9 @@ public class DrawDropProcessor extends BaseDrawProcessor{
         if (BallManager.getInstance().isDropFinshed()) {
             BallManager.getInstance().resetAllBalles();
             drawHandler.removeCallbacksAndMessages(null);
+            //这里表明小球下降完成
+            StoneManager.getInstance().getRowStone();
+            surfaceViewController.doDrawStone();
             return;
         }
 
