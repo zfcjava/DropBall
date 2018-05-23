@@ -4,5 +4,4 @@
 
 ### 目前的效果图
 	
-	
-	![image](https://raw.githubusercontent.com/zfcjava/DropBallGame/master/gif/GIF.gif)
+![image](https://raw.githubusercontent.com/zfcjava/DropBallGame/master/gif/GIF.gif)
